@@ -12,10 +12,10 @@ SPICLK = 11
 SPIMISO = 9
 SPIMOSI = 10
 SPICS = 8
-switch_1 = 
-switch_2 =
-switch_3 = 
-
+switch_1 = 16
+switch_2 = 20
+switch_3 = 21
+switch_4 = 19
 
 # pin setup
 GPIO.setup(SPIMOSI, GPIO.OUT)
@@ -24,6 +24,7 @@ GPIO.setup(SPICLK, GPIO.OUT)
 GPIO.setup(SPICS, GPIO.OUT)
 GPIO.setup(switch_1, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(switch_2, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(switch_4, GPIO.IN, pull_up_down=GPIO.PUD.UP)
 GPIO.setup(switch_3, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
 mcp = Adafruit_MCP3008.MCP3008(clk=SPICLK, cs=SPICS, mosi=SPIMOSI,
@@ -51,7 +52,7 @@ bouncetime=200)
 GPIO.add_event_detect(switch_2, GPIO.FALLING, callback=Reset,
 bouncetime=200)
 
-GPIO.add_event_detect(switch_3, GPIO.FALLING, callback=Stop, bouncetime=200)
+GPIO.add_event_detect(switch_3, GPIO.RISING, callback=Stop, bouncetime=200)
 
 # global variable
 values = [0]*8
