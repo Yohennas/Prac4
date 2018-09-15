@@ -5,6 +5,7 @@ import time
 from os import system, name
 GPIO.setmode(GPIO.BCM)
 StartTimer = time.time()
+boolean stop=false
 
 # pin definition
 SPICLK = 11
@@ -14,6 +15,7 @@ SPICS = 8
 switch_1 = 
 switch_2 =
 switch_3 = 
+
 
 # pin setup
 GPIO.setup(SPIMOSI, GPIO.OUT)
@@ -36,32 +38,36 @@ def FreqChng(channel):
 def Reset(channel):
     EndTimer = 0
     _ = system('clear')
-    
+
+def Stop(channel):
+	if stop=false:
+		stop=true
+	else if stop=true:
+		stop=false
+	    
 GPIO.add_event_detect(switch_1, GPIO.FALLING, callback=FreqChng,
 bouncetime=200)    
     
 GPIO.add_event_detect(switch_2, GPIO.FALLING, callback=Reset,
 bouncetime=200)
 
+GPIO.add_event_detect(switch_3, GPIO.FALLING, callback=Stop, bouncetime=200)
 
 # global variable
 values = [0]*8
 
 freq = 0.5
 
-while True:    
+while (stop=false):    
     for i in range(8):
         
         values[i] = mcp.read_adc(i)
-        # delay for a half second
-        time.sleep(freq)
-        
+	
     EndTimer = time.time()
     Timer = EndTimer-StartTimer
     Time = time.time()
-    print(Time)
-    print (Timer)
-    print (values)   
+    print(Time ' ' Timer ' ' values)
+    time.sleep(freq)	   
     
         
         
