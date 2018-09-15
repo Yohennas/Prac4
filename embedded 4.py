@@ -13,7 +13,8 @@ SPIMOSI = 10
 SPICS = 8
 switch_1 = 
 switch_2 =
-switch_3 = 
+switch_3 =
+switch_4 =
 
 # pin setup
 GPIO.setup(SPIMOSI, GPIO.OUT)
@@ -37,6 +38,10 @@ def Reset(channel):
     EndTimer = 0
     _ = system('clear')
     
+
+    
+    
+
 GPIO.add_event_detect(switch_1, GPIO.FALLING, callback=FreqChng,
 bouncetime=200)    
     
@@ -44,17 +49,32 @@ GPIO.add_event_detect(switch_2, GPIO.FALLING, callback=Reset,
 bouncetime=200)
 
 
+GPIO.add_event_detect(switch_4, GPIO.FALLING, callback=Display,
+bouncetime=200)   
+
+
 # global variable
 values = [0]*8
+past_values = [[0]*8]*5
+j=0
 
 freq = 0.5
+print(' {0:>4}  {1:>4}  {2:>4}  {3:>4}  {4:>4}  {5:>4}  {6:>4}  {7:>4} '.format(*range(8))) #headings
+print('-' * 57)
 
-while True:    
+while True:
+    
+    if (j==5):
+        j=0
+        
     for i in range(8):
         
         values[i] = mcp.read_adc(i)
+        past_values[j][i]
+        
         # delay for a half second
         time.sleep(freq)
+    print('| {0:>4} | {1:>4} | {2:>4} | {3:>4} | {4:>4} | {5:>4} | {6:>4} | {7:>4} |'.format(*values)) #values
         
     EndTimer = time.time()
     Timer = EndTimer-StartTimer
@@ -62,8 +82,11 @@ while True:
     print(Time)
     print (Timer)
     print (values)   
+    j+=1
+    
+    
     
         
-        
+            
 
 
