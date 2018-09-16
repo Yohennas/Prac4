@@ -60,21 +60,28 @@ GPIO.add_event_detect(switch_3, GPIO.RISING, callback=Stop, bouncetime=200)
 # global variable
 values = [0]*8
 freq = 0.5
-
+print('_______________________________________')
+print('Time      Timer     Pot    Temp   Light')
 while (1):
     if (stop==False):    
-        for i in range(8):
+         for i in range(8):
         
             values[i] = mcp.read_adc(i)
-	    print(values[i])
-    EndTimer = time.time()
-    Timer = EndTimer-StartTimer
-    Time = time.time()
-    Time = str(Time)
-    Timer = str(Timer)
-    if (stop ==False):
-        print(Time+' '+Timer)
-    time.sleep(freq)	   
+	 EndTimer=time.time()
+	 Timer = EndTimer-StartTimer
+	 Time = time.asctime( time.localtime(time.time()))
+	 Time = Time[11 : 19]
+	 Timer = time.asctime(time.localtime(Timer))
+	 Timer = Timer[11 : 19]
+	 print('_______________________________________')
+   	 print Time  ,
+	 print ' '+Timer+ ' ' ,
+	 print round(float('{2}'.format(*values))/310, 1),
+	 print '{:2}'.format('V'),
+	 print '{1}'.format(*values),
+	 print int(float(int('{0}'.format(*values))/1023)*100),
+	 print '%'	    
+    	 time.sleep(freq)	   
     
         
         
