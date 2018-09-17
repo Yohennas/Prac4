@@ -7,6 +7,7 @@ GPIO.setmode(GPIO.BCM)
 StartTimer = time.time()
 stop=False
 
+
 # pin definition
 SPICLK = 11
 SPIMISO = 9
@@ -48,6 +49,28 @@ def Stop(channel):
 		stop=True
 	else:
 		stop=False
+
+def Display(channel):
+	global past_values
+	global stop
+	global Time
+	global Timer
+	global freq
+	if (stop==True):
+		
+		for i in range(5):
+			print('_______________________________________')
+                	print Time  ,
+       	        	print ' '+Timer+ ' ' ,
+                	print round(float('{2}'.format(*past_values[i]))/310, 1),
+                	print '{:2}'.format('V'),
+                	print round(((float('{1}'.format(*past_values[i]))/204.6)-0.5)/0.01, 1),
+			print '{:1}'.format('C'),
+                	print  int(float(((float( '{0}'.format(*values)))/450)*100)),
+                	print '%'
+			time.sleep(freq)						
+        	       
+	
 	    
 GPIO.add_event_detect(switch_1, GPIO.FALLING, callback=FreqChng,
 bouncetime=200)    
@@ -57,31 +80,44 @@ bouncetime=200)
 
 GPIO.add_event_detect(switch_3, GPIO.RISING, callback=Stop, bouncetime=200)
 
+GPIO.add_event_detect(switch_4, GPIO.FALLING, callback=Display, bouncetime=200)
+
 # global variable
 values = [0]*8
 freq = 0.5
+
+
+
+
 print('_______________________________________')
 print('Time      Timer     Pot    Temp   Light')
 while (1):
-    if (stop==False):    
-         for i in range(8):
         
-            values[i] = mcp.read_adc(i)
-	 EndTimer=time.time()
-	 Timer = EndTimer-StartTimer
-	 Time = time.asctime( time.localtime(time.time()))
-	 Time = Time[11 : 19]
-	 Timer = time.asctime(time.localtime(Timer))
-	 Timer = Timer[11 : 19]
-	 print('_______________________________________')
-   	 print Time  ,
-	 print ' '+Timer+ ' ' ,
-	 print round(float('{2}'.format(*values))/310, 1),
-	 print '{:2}'.format('V'),
-	 print '{1}'.format(*values),
-	 print int(float(int('{0}'.format(*values))/1023)*100),
-	 print '%'	    
-    	 time.sleep(freq)	   
+    for i in range(8):
+	
+	values[i] = mcp.read_adc(i)        
+        			
+
+
+    EndTimer=time.time()
+    Timer = EndTimer-StartTimer
+    Time = time.asctime( time.localtime(time.time()))
+    Time = Time[11 : 19]
+    Timer = time.asctime(time.localtime(Timer))
+    Timer = Timer[11 : 19]
+    
+    if (stop==False):
+    
+   	print('_______________________________________')
+    	print Time  ,
+    	print ' '+Timer+ ' ' ,
+    	print round(float('{2}'.format(*values))/310, 1),
+    	print '{:2}'.format('V'),
+    	print round(((float('{1}'.format(*values))/204.6)-0.5)/0.01 ,1),
+	print '{:1}'.format('C'),
+    	print int(float(((float( '{0}'.format(*values)))/450)*100)),
+    	print '%'	    
+    	time.sleep(freq)	   
     
         
         
