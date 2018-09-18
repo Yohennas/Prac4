@@ -13,10 +13,10 @@ SPICLK = 11
 SPIMISO = 9
 SPIMOSI = 10
 SPICS = 8
-switch_1 = 
-switch_2 = 
-switch_3 = 
-switch_4 = 
+switch_1 = 16
+switch_2 = 6
+switch_3 = 26
+switch_4 = 5
 
 # pin setup
 GPIO.setup(SPIMOSI, GPIO.OUT)
@@ -51,24 +51,24 @@ def Stop(channel):
 		stop=False
 
 def Display(channel):
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
+	global past_values
+	global stop
+	global Time
+	global Timer
+	global freq
+	if (stop==True):
+		
+		for i in range(5):
+			print('_______________________________________')
+                	print Time  ,
+       	        	print ' '+Timer+ ' ' ,
+                	print round(float('{2}'.format(*past_values[i]))/310, 1),
+                	print '{:2}'.format('V'),
+                	print round(((float('{1}'.format(*past_values[i]))/204.6)-0.5)/0.01, 1),
+			print '{:1}'.format('C'),
+                	print  int(float(((float( '{0}'.format(*values)))/450)*100)),
                 	
-                	
-                	
-                	
-                	
-                	
-                	
-						
+			time.sleep(freq)						
         	       
 	
 	    
@@ -107,3 +107,15 @@ while (1):
     Timer = Timer[11 : 19]
     
     if (stop==False):
+    
+   	print('_______________________________________')
+    	print Time  ,
+    	print ' '+Timer+ ' ' ,
+    	print round(float('{2}'.format(*values))/310, 1),
+    	print '{:2}'.format('V'),
+    	print round(((float('{1}'.format(*values))/204.6)-0.5)/0.01 ,1),
+	print '{:1}'.format('C'),
+    	print int(float(((float( '{0}'.format(*values)))/450)*100)),
+    	print '%'	    
+    	time.sleep(freq)	   
+    j+=1
